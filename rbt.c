@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-enum _color { RED, BLACK };
+enum color { RED, BLACK };
 
 struct tree {
    struct node* root;
 };
 
 struct node {
-   enum _color color;
+   enum color tag;
    int value;
    struct node* left;
    struct node* right;
@@ -46,7 +46,7 @@ bool search(struct tree* pt, int v) {
 
 void insert(struct tree* p, int v) {
    p -> root = _insert_rec(p -> root, v);
-   p -> root -> color = BLACK;
+   p -> root -> tag = BLACK;
 }
 
 struct node* _insert_rec(struct node* p, int v) {
@@ -61,22 +61,22 @@ struct node* _insert_rec(struct node* p, int v) {
    else if (p -> value > v) {
       p -> left = _insert_rec(p -> left, v);
 
-      if (p -> color == BLACK && (pc = p -> left) -> color == RED) {
-         if ((pgc = pc -> left) && pgc -> color == RED) {
+      if (p -> tag == BLACK && (pc = p -> left) -> tag == RED) {
+         if ((pgc = pc -> left) && pgc -> tag == RED) {
             p -> left = pc -> right;
             pc -> right = p;
 
-            pgc -> color = BLACK;
+            pgc -> tag = BLACK;
 
             return pc;
          }
-         if ((pgc = pc -> right) && pgc -> color == RED) {
+         if ((pgc = pc -> right) && pgc -> tag == RED) {
             pc -> right = pgc -> left;
             p -> left = pgc -> right;
             pgc -> left = pc;
             pgc -> right = p;
 
-            pc -> color = BLACK;
+            pc -> tag = BLACK;
 
             return pgc;
          }
@@ -86,22 +86,22 @@ struct node* _insert_rec(struct node* p, int v) {
    else if (p -> value < v) {
       p -> right = _insert_rec(p -> right, v);
 
-      if (p -> color == BLACK && (pc = p -> right) -> color == RED) {
-         if ((pgc = pc -> left) && pgc -> color == RED) {
+      if (p -> tag == BLACK && (pc = p -> right) -> tag == RED) {
+         if ((pgc = pc -> left) && pgc -> tag == RED) {
             p -> right = pgc -> left;
             pc -> left = pgc -> right;
             pgc -> left = p;
             pgc -> right = pc;
 
-            pc -> color = BLACK;
+            pc -> tag = BLACK;
 
             return pgc;
          }
-         if ((pgc = pc -> right) && pgc -> color == RED) {
+         if ((pgc = pc -> right) && pgc -> tag == RED) {
             p -> right = pc -> left;
             pc -> left = p;
 
-            pgc -> color = BLACK;
+            pgc -> tag = BLACK;
 
             return pc;
          }
