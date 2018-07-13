@@ -108,4 +108,5 @@ struct node* _insert_rec(struct node* p, int v) {
       }
       return p;
    }
+   return p;
 }
