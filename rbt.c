@@ -8,8 +8,8 @@ struct tree {
 };
 
 struct node {
-   enum color tag;
-   int value;
+   enum color   tag;
+   int          value;
    struct node* left;
    struct node* right;
 };
