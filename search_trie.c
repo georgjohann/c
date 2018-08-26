@@ -16,107 +16,105 @@ struct node {
    struct node* child;
 };
 
-typedef struct trie* trie_p;
-
 struct trie* new(void) {
-   struct trie* ptr = malloc(sizeof (struct trie));
-   ptr -> empty_str = false;
-   ptr -> initial = NULL;
-   return ptr;
+   struct trie* p = malloc(sizeof (struct trie));
+   p -> empty_str = false;
+   p -> initial = NULL;
+   return p;
 }
 
-void delete(struct trie* ptr) {
-   _delete_rec(ptr -> initial);
-   free(ptr);
+void delete(struct trie* p) {
+   _delete_rec(p -> initial);
+   free(p);
 }
 
-void _delete_rec(struct node* node_ptr) {
-   if (node_ptr) {
-      _delete_rec(node_ptr -> sib);
-      _delete_rec(node_ptr -> child);
+void _delete_rec(struct node* p) {
+   if (p) {
+      _delete_rec(p -> sib);
+      _delete_rec(p -> child);
 
-      free(node_ptr);
+      free(p);
    }
 }
 
-void insert(struct trie* ptr, char* str_ptr) {
-   struct node* node_ptr;
+void insert(struct trie* trie_p, char* str_p) {
+   struct node* p;
 
-   if (! *str_ptr) {
-      ptr -> empty_str = true;
+   if (! *str_p) {
+      trie_p -> empty_str = true;
       return;
    }
 
-   if (! (node_ptr = ptr -> initial)) {
-      ptr -> initial = malloc(sizeof (struct node));
-      node_ptr = ptr -> initial;
+   if (! (p = trie_p -> initial)) {
+      trie_p -> initial = malloc(sizeof (struct node));
+      p = trie_p -> initial;
 
       goto NEW_SUFFIX;
    }
 
    for (;;) {
-      if (node_ptr -> value == *str_ptr) {
-         if (! *(++str_ptr)) {
-            node_ptr -> end = true;
+      if (p -> value == *str_p) {
+         if (! *(++str_p)) {
+            p -> end = true;
             return;
          }
 
-         if (! node_ptr -> child) {
-            node_ptr -> child = malloc(sizeof (struct node));
-            node_ptr = node_ptr -> child;
+         if (! p -> child) {
+            p -> child = malloc(sizeof (struct node));
+            p = node_ptr -> child;
 
             break;
          }
 
-         node_ptr = node_ptr -> child;
+         p = p -> child;
       }
       else {
-         if (! node_ptr -> sib) {
-            node_ptr -> sib = malloc(sizeof (struct node));
-            node_ptr = node_ptr -> sib;
+         if (! p -> sib) {
+            p -> sib = malloc(sizeof (struct node));
+            p = node_ptr -> sib;
 
             break;
          }
 
-         node_ptr = node_ptr -> sib;
+         p = p -> sib;
       }
    }
 
    NEW_SUFFIX:
    for (;;) {
-      node_ptr -> value = *str_ptr++;
-      node_ptr -> sib = NULL;
+      p -> value = *(str_p++);
+      p -> sib = NULL;
 
-      if (! *str_ptr) {
-         node_ptr -> end = true;
-         node_ptr -> child = NULL;
+      if (! *str_p) {
+         p -> end = true;
+         p -> child = NULL;
 
          return;
       }
-      node_ptr -> end = false;
-      node_ptr -> child = malloc(sizeof (struct node));
+      p -> end = false;
+      p -> child = malloc(sizeof (struct node));
 
-      node_ptr = node_ptr -> child;
+      p = p -> child;
    }
 }
 
-bool element(struct trie* ptr, char* str_ptr) {
-   struct node* node_ptr;
+bool element(struct trie* trie_p, char* str_p) {
+   struct node* p;
 
-   if (! *str_ptr) { return ptr -> empty_str; }
+   if (! *str_p) { return trie_p -> empty_str; }
 
-   if (! (node_ptr = ptr -> initial)) { return false; }
+   if (! (p = trie_p -> initial)) { return false; }
 
    do {
-      if (node_ptr -> value == *str_ptr) {
-         if (! *(++str_ptr)) { return node_ptr -> end; }
+      if (p -> value == *str_p) {
+         if (! *(++str_p)) { return p -> end; }
 
-         node_ptr = node_ptr -> child;
+         p = p -> child;
       }
       else {
-         node_ptr = node_ptr -> sib;
+         p = p -> sib;
       }
-   } while (node_ptr);
+   } while (p);
 
    return false;
 }
