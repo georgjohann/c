@@ -16,22 +16,22 @@ struct node {
    struct node* child;
 };
 
-struct trie* new(void) {
+struct trie* create(void) {
    struct trie* p = malloc(sizeof (struct trie));
    p -> empty_str = false;
    p -> initial = NULL;
    return p;
 }
 
-void delete(struct trie* p) {
-   _delete_rec(p -> initial);
+void destroy(struct trie* p) {
+   _destroy_rec(p -> initial);
    free(p);
 }
 
-void _delete_rec(struct node* p) {
+void _destroy_rec(struct node* p) {
    if (p) {
-      _delete_rec(p -> sib);
-      _delete_rec(p -> child);
+      _destroy_rec(p -> sib);
+      _destroy_rec(p -> child);
 
       free(p);
    }
