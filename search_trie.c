@@ -1,7 +1,7 @@
+// Search trie / prefix tree string instance
+
 #include <stdlib.h>
 #include <stdbool.h>
-
-// Search trie / prefix tree string instance
 
 struct trie {
    bool         empty_str;
